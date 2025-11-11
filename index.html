@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Card</title>
+    <link href="./style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Form Section -->
+      <div class="form-wrapper">
+        <h1 class="form-title">Tạo Profile Card</h1>
+        <form id="profileForm">
+          <div class="form-group">
+            <label for="imageInput">Chọn ảnh</label>
+            <div class="file-input-wrapper">
+              <input type="file" id="imageInput" accept="image/*" required />
+            </div>
+            <div class="error-message" id="imageError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="nameInput">Tên</label>
+            <input
+              type="text"
+              id="nameInput"
+              placeholder="Nhập tên của bạn"
+              required
+            />
+            <div class="error-message" id="nameError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="titleInput">Chức vụ</label>
+            <input
+              type="text"
+              id="titleInput"
+              placeholder="Nhập chức vụ của bạn"
+              required
+            />
+            <div class="error-message" id="titleError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="messageInput">Lời nhắn</label>
+            <textarea
+              id="messageInput"
+              placeholder="Nhập lời nhắn"
+              required
+            ></textarea>
+            <div class="error-message" id="messageError"></div>
+          </div>
+
+          <button type="submit" class="btn-submit">Tạo Profile Card</button>
+        </form>
+      </div>
+
+      <!-- Card Section -->
+      <div class="card-container" id="cardContainer">
+        <div class="card" id="profileCard">
+          <!-- Enhanced card design with gradient background and better layout -->
+          <div class="card-header">
+            <div class="header-gradient">
+              <img src="./Logo.png" class="logo" alt="Logo" />
+              <div class="header-title">
+                <h2>Đại hội đại biểu</h2>
+                <h3>
+                  Đoàn TNCS Hồ Chí Minh tỉnh Hà Tĩnh lần thứ XIX, <br>nhiệm kỳ
+                  2025-2030
+                </h3>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-group">
+              <div class="card-image-wrapper">
+                <img class="card-image" id="cardImage" alt="Profile" />
+              </div>
+              <div class="card-info">
+                <div class="card-name" id="cardName"></div>
+                <div class="card-title" id="cardTitle"></div>
+              </div>
+            </div>
+
+            <div class="card-message" id="cardMessage"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-container" id="btnContainer">
+        <button class="btn-download" id="downloadBtn">Tải xuống</button>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>
