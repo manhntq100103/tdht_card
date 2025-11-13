@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile Card</title>
     <link href="./style.css" rel="stylesheet" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
   </head>
   <body>
     <div class="container">
@@ -16,6 +21,12 @@
             <label for="imageInput">Chọn ảnh</label>
             <div class="file-input-wrapper">
               <input type="file" id="imageInput" accept="image/*" required />
+              <div class="image-preview-container">
+                <img id="previewImage" />
+                <button type="button" id="cropBtn" class="btn-submit">
+                  Cắt ảnh
+                </button>
+              </div>
             </div>
             <div class="error-message" id="imageError"></div>
           </div>
@@ -66,7 +77,7 @@
               <div class="header-title">
                 <h2>Đại hội đại biểu</h2>
                 <h3>
-                  Đoàn TNCS Hồ Chí Minh tỉnh Hà Tĩnh lần thứ XIX, <br>nhiệm kỳ
+                  Đoàn TNCS Hồ Chí Minh tỉnh Hà Tĩnh lần thứ XIX, <br />nhiệm kỳ
                   2025-2030
                 </h3>
               </div>
