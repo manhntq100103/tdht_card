@@ -87,6 +87,62 @@ input[type="file"] {
   cursor: pointer;
 }
 
+.image-preview-container {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px;
+  border: 2px dashed #667eea;
+  border-radius: 12px;
+  background: #f8faff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+/* Ảnh hiển thị để crop */
+.image-preview-container img {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+/* Nút cắt ảnh */
+#cropBtn {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#cropBtn:hover {
+  background: linear-gradient(90deg, #5a6fe0, #6b429a);
+  transform: translateY(-2px);
+}
+
+.cropper-view-box,
+.cropper-face {
+  border-radius: 50% !important;
+}
+
+.cropper-bg {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.cropper-container {
+  max-width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+
 .error-message {
   display: none;
   color: #e74c3c;

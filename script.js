@@ -12,6 +12,11 @@ const cardTitle = document.getElementById("cardTitle");
 const cardMessage = document.getElementById("cardMessage");
 const downloadBtn = document.getElementById("downloadBtn");
 
+let cropper;
+const previewContainer = document.querySelector(".image-preview-container");
+const previewImage = document.getElementById("previewImage");
+const cropBtn = document.getElementById("cropBtn");
+
 const imageError = document.getElementById("imageError");
 const nameError = document.getElementById("nameError");
 const titleError = document.getElementById("titleError");
@@ -25,10 +30,53 @@ const ALLOWED_IMAGE_TYPES = [
   "image/webp",
 ];
 
-// Clear error messages on input
-imageInput.addEventListener("change", () => {
-  imageError.classList.remove("show");
-  imageError.textContent = "";
+// imageInput.addEventListener("change", () => {
+//   imageError.classList.remove("show");
+//   imageError.textContent = "";
+// });
+imageInput.addEventListener("change", (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (evt) {
+    previewImage.src = evt.target.result;
+    previewContainer.style.display = "block";
+
+    // Hủy cropper cũ nếu có
+    if (cropper) {
+      cropper.destroy();
+    }
+
+    // Khởi tạo cropper mới
+    cropper = new Cropper(previewImage, {
+      aspectRatio: 1, // Tỉ lệ vuông
+      viewMode: 1,
+      dragMode: "move",
+      autoCropArea: 1,
+    });
+  };
+  reader.readAsDataURL(file);
+});
+
+// Khi người dùng nhấn "Cắt ảnh"
+cropBtn.addEventListener("click", () => {
+  if (!cropper) return;
+
+  const canvas = cropper.getCroppedCanvas({
+    width: 400,
+    height: 400,
+  });
+
+  // Hiển thị ảnh đã crop lên card
+  cardImage.src = canvas.toDataURL("image/jpeg");
+
+  // Ẩn vùng crop
+  previewContainer.style.display = "none";
+
+  // Giải phóng cropper
+  cropper.destroy();
+  cropper = null;
 });
 
 nameInput.addEventListener("input", () => {
@@ -50,85 +98,51 @@ messageInput.addEventListener("input", () => {
 form.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  // Reset error messages
-  imageError.classList.remove("show");
-  nameError.classList.remove("show");
-  titleError.classList.remove("show");
-  messageError.classList.remove("show");
+  // Reset lỗi cũ
   imageError.textContent = "";
   nameError.textContent = "";
   titleError.textContent = "";
   messageError.textContent = "";
 
-  // Validate file
-  const file = imageInput.files[0];
-  if (!file) {
-    imageError.textContent = "Vui lòng chọn một ảnh.";
+  // 🧠 Kiểm tra xem đã có ảnh crop chưa
+  if (!cardImage.src) {
+    imageError.textContent = "Vui lòng chọn và cắt ảnh trước khi tạo.";
     imageError.classList.add("show");
     return;
   }
 
-  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-    imageError.textContent =
-      "Chỉ chấp nhận các định dạng ảnh (JPEG, PNG, GIF, WebP).";
-    imageError.classList.add("show");
-    return;
-  }
+  // 🧾 Validate dữ liệu text
+  const nameValue = nameInput.value.trim();
+  const titleValue = titleInput.value.trim();
+  const messageValue = messageInput.value.trim();
 
-  if (file.size > MAX_FILE_SIZE) {
-    imageError.textContent = "Dung lượng ảnh không được vượt quá 10MB.";
-    imageError.classList.add("show");
-    return;
-  }
-
-  // Validate name
-  const name = nameInput.value.trim();
-  if (!name) {
+  if (!nameValue) {
     nameError.textContent = "Vui lòng nhập tên.";
     nameError.classList.add("show");
     return;
   }
 
-  // Validate title
-  const title = titleInput.value.trim();
-  if (!title) {
+  if (!titleValue) {
     titleError.textContent = "Vui lòng nhập chức vụ.";
     titleError.classList.add("show");
     return;
   }
 
-  // Display card
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const img = new Image();
-    img.onload = () => {
-      // Cắt ảnh thành hình vuông ở giữa
-      const size = Math.min(img.width, img.height);
-      const startX = (img.width - size) / 2;
-      const startY = (img.height - size) / 2;
+  if (!messageValue) {
+    messageError.textContent = "Vui lòng nhập lời nhắn.";
+    messageError.classList.add("show");
+    return;
+  }
 
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = size;
-      canvas.height = size;
-      ctx.drawImage(img, startX, startY, size, size, 0, 0, size, size);
+  // 🪄 Cập nhật thông tin lên card
+  cardName.textContent = nameValue;
+  cardTitle.textContent = titleValue;
+  cardMessage.textContent = messageValue;
 
-      // Gán kết quả đã cắt vào cardImage
-      cardImage.src = canvas.toDataURL("image/jpeg");
-      cardName.textContent = name;
-      cardTitle.textContent = title;
-      cardMessage.textContent = messageInput.value.trim();
-      cardContainer.classList.add("show");
-      btnContainer.classList.add("show");
-
-      // Reset form
-      form.reset();
-    };
-    img.src = e.target.result;
-  };
-
-  reader.readAsDataURL(file);
+  cardContainer.classList.add("show");
+  btnContainer.classList.add("show");
 });
+
 
 
 const html2canvas = window.html2canvas; // Declare the html2canvas variable
